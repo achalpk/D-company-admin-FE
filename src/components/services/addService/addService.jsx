@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import axios from "axios";
+// import axios from "axios";
 import { useSelector, useDispatch } from 'react-redux';
 import { addServiceAction } from '../../../redux/services/servicesAction';
+import { addService } from '../../../APIs/services/services';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -36,27 +37,29 @@ export default function AddService(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const saveService = ()=>{
+  const saveService = async ()=>{
     const formData = new FormData();
     formData.append('title',data.title);
     formData.append('sDesc',data.sDesc);
     formData.append('lDesc',data.lDesc);
     formData.append('serviceImage',data.file);
 
-    axios.post('http://localhost:9000/addService',
-      formData, 
-      {headers:{'content-type':'multipart/form-data'}}
-    )
-    .then(res=>{
-      dispatch(addServiceAction({title:'', sDesc:'', lDesc:'', file:''}))
+    dispatch(addService(formData))
+    handleClose();
+    // axios.post('http://localhost:9000/addService',
+      // formData, 
+      // {headers:{'content-type':'multipart/form-data'}}
+    // )
+    // .then(res=>{
+      // dispatch(addServiceAction({title:'', sDesc:'', lDesc:'', file:''}))
       // setStatus(res.data.success)
       // setFlag(true)
-      props.setDemo(res.data.demo)
-    })
-    .catch(error=>{
+      // props.setDemo(res.data.demo)
+    // })
+    // .catch(error=>{
       // setStatus(error.response.data.success)
       // setFlag(true)
-    })
+    // })
   }
 
 

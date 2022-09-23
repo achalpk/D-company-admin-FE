@@ -27,7 +27,8 @@ function addService(formData){
       )
       .then(()=>{
         dispatch(addServiceAction({title:'', sDesc:'', lDesc:'', file:''}));
-        dispatch(fetchServices());
+        dispatch(fetchServices())
+        return true
         // setStatus(res.data.success)
         // setFlag(true)
         // props.setDemo(res.data.demo)
