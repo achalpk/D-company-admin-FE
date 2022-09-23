@@ -1,0 +1,11 @@
+.App {
+  min-height: 90.5vh;
+  display: flex;
+  justify-content: center;
+  margin-top: 64px;
+}
+
+.Links{
+  text-decoration: none;
+  color: inherit;
+}
