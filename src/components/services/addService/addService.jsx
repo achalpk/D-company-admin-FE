@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Modal from '@mui/material/Modal';
 import AddIcon from '@mui/icons-material/Add';
-// import DialogBox from './addServiceConfirm';
+import DialogBox from './addServiceConfirm';
 
 
 const style = {
@@ -28,9 +28,8 @@ const style = {
 export default function AddService(props) {
   const data = useSelector((state)=>state.servicesReducer.addData);
   const dispatch = useDispatch();
-  // const [status,setStatus] = useState('');
-  // const [flag,setFlag] = useState(false);
-  // const [data, setData] = useState({title:'', sDesc:'', lDesc:'', file:''})
+  const [status,setStatus] = useState('');
+  const [flag,setFlag] = useState(false);
 
   const [open, setOpen] = useState(false);
 
@@ -44,22 +43,7 @@ export default function AddService(props) {
     formData.append('lDesc',data.lDesc);
     formData.append('serviceImage',data.file);
 
-    dispatch(addService(formData))
-    handleClose();
-    // axios.post('http://localhost:9000/addService',
-      // formData, 
-      // {headers:{'content-type':'multipart/form-data'}}
-    // )
-    // .then(res=>{
-      // dispatch(addServiceAction({title:'', sDesc:'', lDesc:'', file:''}))
-      // setStatus(res.data.success)
-      // setFlag(true)
-      // props.setDemo(res.data.demo)
-    // })
-    // .catch(error=>{
-      // setStatus(error.response.data.success)
-      // setFlag(true)
-    // })
+    dispatch(addService(formData,setStatus, setFlag))
   }
 
 
@@ -82,7 +66,6 @@ export default function AddService(props) {
                 id="title"
                 label="Title"
                 autoFocus
-                // onFocus={()=>setStatus('')}
                 onChange={(e)=>dispatch(addServiceAction({...data,title:e.target.value}))}
             />
             <br/>
@@ -121,7 +104,7 @@ export default function AddService(props) {
             >
                 Save
             </Button>
-            {/* {flag? <DialogBox from="addService" status={status} setFlag={setFlag} setOpenAdd={setOpen}/> : null} */}
+            {flag? <DialogBox from="addService" status={status} setFlag={setFlag} setOpenAdd={setOpen}/> : null}
         </Box>
       </Modal>
     </div>

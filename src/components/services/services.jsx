@@ -26,25 +26,20 @@ const columns = [
 export default function Services() {
   const services = useSelector((state)=>state.servicesReducer.services);
   const dispatch = useDispatch();
-  const [demo,setDemo]=useState('');
   const [editData,setEditData]=useState(false);
 
   useEffect(()=>{
     dispatch(fetchServices());
-  },[demo, dispatch])
-
-
+  },[dispatch])
 
   const onClickDelete = (id, image)=>{
     dispatch(deleteService(id, image));
   }
 
-
-
   return (
     <div className='services'>
       <div style={{textAlign:'center'}}>
-        <AddService setDemo={setDemo}/>
+        <AddService/>
       </div>
       <br/>
       <br/>
@@ -108,7 +103,7 @@ export default function Services() {
           </TableBody>
         </Table>
       </TableContainer>
-      {editData && <EditService editData = {editData} setEditData = {setEditData} setDemo={setDemo}/> }
+      {editData && <EditService editData = {editData} setEditData = {setEditData}/> }
     </div>
   );
 }
