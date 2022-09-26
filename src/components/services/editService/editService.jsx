@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
-import axios from "axios";
+// import axios from "axios";
+import EditDialogBox from './editServiceConfirm';
+import { useDispatch } from 'react-redux';
+import { editService } from '../../../APIs/services/services';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -21,12 +24,14 @@ const style = {
   borderRadius: 2,
 };
 
-export default function EditService(props) {
+export default function EditService({editData, setEditData}) {
+    const dispatch = useDispatch();
     const [status,setStatus] = useState(true);
-    const [title,setTitle] = useState(props.editData.title);
-    const [shortDesc,setSDesc] = useState(props.editData.short_desc);
-    const [longDesc,setLDesc] = useState(props.editData.long_desc);
-    const [file,setFile] = useState({name:props.editData.image});
+    const [flag,setFlag] = useState(false);
+    const [title,setTitle] = useState(editData.title);
+    const [shortDesc,setSDesc] = useState(editData.short_desc);
+    const [longDesc,setLDesc] = useState(editData.long_desc);
+    const [file,setFile] = useState({name : editData.image});
     const [newTitle,setNewTitle] = useState('');
     const [newShortDesc,setNewSDesc] = useState('');
     const [newLongDesc,setNewLDesc] = useState('');
@@ -37,7 +42,7 @@ export default function EditService(props) {
 
     const handleClose = () =>{ 
          setOpen(false);  
-         props.setEditData(false);
+         setEditData(false);
     };
 
     const saveService = ()=>{
@@ -47,21 +52,8 @@ export default function EditService(props) {
         newShortDesc && formData.append('shortDesc',newShortDesc);
         newLongDesc && formData.append('longDesc',newLongDesc);
         newFile && formData.append('serviceImage',newFile);
-        props.editData.image && formData.append('oldImage',props.editData.image);
-
-        axios.patch(`http://localhost:9000/editService/${props.editData.id}`,
-            formData, 
-            {headers:{'content-type':'multipart/form-data'}}
-        )
-        .then(res=>{
-            setStatus(res.data.success)
-            setOpen(false);
-            props.setDemo(res.data.demo)
-            props.setEditData(false);
-        })
-        .catch(error=>{
-            setStatus(error.response.data.success)
-        })
+        editData.image && formData.append('oldImage',editData.image);
+        dispatch(editService(editData.id, formData, setStatus, setFlag));
     }
 
 
@@ -137,8 +129,7 @@ export default function EditService(props) {
             >
                 Save Changes
             </Button>
-            {!status && <p>Error occured : Please try again</p>}
-            {/* {flag? <DialogBox from="addService" status={status} setFlag={setFlag} setOpenAdd={setOpen}/> : null} */}
+            {flag? <EditDialogBox from="addService" status={status} setFlag={setFlag} handleCloseEdit={handleClose}/> : null}
         </Box>
       </Modal>
     </div>
