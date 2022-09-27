@@ -1,10 +1,10 @@
 import {WelcomeType, AddWelcomeType, WelcomeLoadingType} from './welcomeType';
 
 
-export function setWelcomeAction(services){
+export function setWelcomeAction(welcome){
     return { 
         type : WelcomeType,
-        payload : services 
+        payload : welcome 
     };
 }
 

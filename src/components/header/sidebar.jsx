@@ -7,7 +7,6 @@ import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
-// import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -18,6 +17,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SourceIcon from '@mui/icons-material/Source';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
+import WorkIcon from '@mui/icons-material/Work';
+import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -129,7 +130,7 @@ export default function MiniDrawer() {
         </DrawerHeader>
         {/* <Divider /> */}
         <List>
-          {['Services', 'Welcome'].map((text, index) => (
+          {['Services', 'Welcome', 'Job', 'Job applicant'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <Link to={{pathname:`/${text}`}} className='Links'>
                 <ListItemButton
@@ -147,7 +148,10 @@ export default function MiniDrawer() {
                       
                     }}
                   >
-                    {index === 0 ? <MiscellaneousServicesIcon /> : <SourceIcon />}
+                    {index === 0 ? <MiscellaneousServicesIcon /> : null}
+                    {index === 1 ? <SourceIcon /> : null}
+                    {index === 2 ? <WorkIcon /> : null}
+                    {index === 3 ? <EmojiPeopleIcon /> : null}
                   </ListItemIcon>
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>
