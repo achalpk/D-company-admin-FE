@@ -67,9 +67,9 @@ export default function EditWelcome({editData, setEditData}) {
                 <br/>
                 <br/>
                 <TextField
-                    name="short_desc"
-                    id="short_description"
-                    label="Short description"
+                    name="desc"
+                    id="description"
+                    label="Description"
                     value={desc}
                     multiline
                     fullWidth

@@ -130,7 +130,7 @@ export default function MiniDrawer() {
         </DrawerHeader>
         {/* <Divider /> */}
         <List>
-          {['Services', 'Welcome', 'Job', 'Job applicant'].map((text, index) => (
+          {['Services', 'Welcome', 'Job', 'Job Applicant'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <Link to={{pathname:`/${text}`}} className='Links'>
                 <ListItemButton

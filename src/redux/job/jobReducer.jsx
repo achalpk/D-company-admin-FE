@@ -4,7 +4,7 @@ import { JobType, AddJobType, JobLoadingType } from './jobType';
 const initialState = { 
     job:[], 
     addJobData:{title:'', desc:'', exp:'', location:''}, 
-    jobLoading:{show:false, add:false, edit:false} 
+    jobLoading:{show:false, add:false} 
 };
 
 function jobReducer(state = initialState, action){
