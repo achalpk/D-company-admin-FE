@@ -20,12 +20,14 @@ export default function ViewService() {
             component="img"
             height="340"
             image={`http://localhost:9000/${viewData.image}`}
-            alt="green iguana"
+            alt={viewData.image}
             />
             <CardContent>
                 <Typography variant="body2" color="text.primary">
-                    <p><b>Short Description : </b>{viewData.short_desc}</p>
-                    <p><b>Long Description : </b>{viewData.long_desc}</p>
+                    <b>Short Description : </b>{viewData.short_desc}
+                    <br/>
+                    <br/>
+                    <b>Long Description : </b>{viewData.long_desc}
                 </Typography>
             </CardContent>
             <CardActions>

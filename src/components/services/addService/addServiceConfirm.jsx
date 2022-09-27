@@ -22,7 +22,7 @@ export default function DialogBox({ status, setFlag, setOpenAdd }) {
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
           <DialogContentText>
-            {status ? <b>Service added successfully</b> : <b>Error occured <br/> Please try again</b>}
+            {status ? <b>Service added successfully</b> : <b>Error occured :<br/> Please try again</b>}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

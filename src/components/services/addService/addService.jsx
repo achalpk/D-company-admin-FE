@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-// import axios from "axios";
 import { useSelector, useDispatch } from 'react-redux';
 import { addServiceAction } from '../../../redux/services/servicesAction';
 import { addService } from '../../../APIs/services/services';
@@ -8,7 +7,6 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Modal from '@mui/material/Modal';
 import AddIcon from '@mui/icons-material/Add';
-import DialogBox from './addServiceConfirm';
 
 
 const style = {
@@ -28,8 +26,6 @@ const style = {
 export default function AddService(props) {
   const data = useSelector((state)=>state.servicesReducer.addData);
   const dispatch = useDispatch();
-  const [status,setStatus] = useState('');
-  const [flag,setFlag] = useState(false);
 
   const [open, setOpen] = useState(false);
 
@@ -43,7 +39,7 @@ export default function AddService(props) {
     formData.append('lDesc',data.lDesc);
     formData.append('serviceImage',data.file);
 
-    dispatch(addService(formData,setStatus, setFlag))
+    dispatch(addService(formData,handleClose))
   }
 
 
@@ -104,7 +100,6 @@ export default function AddService(props) {
             >
                 Save
             </Button>
-            {flag? <DialogBox from="addService" status={status} setFlag={setFlag} setOpenAdd={setOpen}/> : null}
         </Box>
       </Modal>
     </div>

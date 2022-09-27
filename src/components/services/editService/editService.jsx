@@ -1,13 +1,10 @@
 import React, {useState} from 'react';
-// import axios from "axios";
-import EditDialogBox from './editServiceConfirm';
 import { useDispatch } from 'react-redux';
 import { editService } from '../../../APIs/services/services';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Modal from '@mui/material/Modal';
-
 
 
 const style = {
@@ -26,8 +23,6 @@ const style = {
 
 export default function EditService({editData, setEditData}) {
     const dispatch = useDispatch();
-    const [status,setStatus] = useState(true);
-    const [flag,setFlag] = useState(false);
     const [title,setTitle] = useState(editData.title);
     const [shortDesc,setSDesc] = useState(editData.short_desc);
     const [longDesc,setLDesc] = useState(editData.long_desc);
@@ -53,85 +48,84 @@ export default function EditService({editData, setEditData}) {
         newLongDesc && formData.append('longDesc',newLongDesc);
         newFile && formData.append('serviceImage',newFile);
         editData.image && formData.append('oldImage',editData.image);
-        dispatch(editService(editData.id, formData, setStatus, setFlag));
+        dispatch(editService(editData.id, formData, handleClose));
     }
 
 
   return (
     <div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-            <h2>Edit Service</h2>
-            <TextField
-                name="title"
-                required
-                fullWidth
-                id="title"
-                label="Title"
-                value={title}
-                autoFocus
-                onChange={(e)=>{
-                    setTitle(e.target.value);
-                    setNewTitle(e.target.value+' ');
-                }}
-            />
-            <br/>
-            <br/>
-            <TextField
-                name="short_desc"
-                id="short_description"
-                label="Short description"
-                value={shortDesc}
-                multiline
-                fullWidth
-                rows={2}
-                onChange={(e)=>{
-                    setSDesc(e.target.value);
-                    setNewSDesc(e.target.value+' ');
-                }}
-            />
-            <br/>
-            <br/>
-            <TextField
-                name="long_desc"
-                id="long_description"
-                label="Long description"
-                value={longDesc}
-                multiline
-                fullWidth
-                rows={3}
-                onChange={(e)=>{
-                    setLDesc(e.target.value);
-                    setNewLDesc(e.target.value+' ')
-                }}
-            />
-            <br/>
-            <br/>
-            <div style={{display:'flex', justifyContent:'space-around', alignItems:'center', margin:'auto', width:'600px' }}>
-                <b style={{ marginRight: '100px'}}>Edit Image -</b> 
-                {file.name ? <p style={{width:'100px', height:'50px', overflow:'hidden', wordBreak: 'break-word'}}>{file.name}</p> : <p>No image</p>}
-                {file.name?<img src={`http://localhost:9000/${file.name}`} width='90' height='70'  alt={file.name}  />:null}
-                <Button variant="contained" sx={{ ml: 10}} component="label" size="small">
-                    Upload
-                    <input hidden type="file" name="serviceImage" onChange={(e)=>{setFile(e.target.files[0]);setNewFile(e.target.files[0])}}/>
+        <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box sx={style}>
+                <h2>Edit Service</h2>
+                <TextField
+                    name="title"
+                    required
+                    fullWidth
+                    id="title"
+                    label="Title"
+                    value={title}
+                    autoFocus
+                    onChange={(e)=>{
+                        setTitle(e.target.value);
+                        setNewTitle(e.target.value+' ');
+                    }}
+                />
+                <br/>
+                <br/>
+                <TextField
+                    name="short_desc"
+                    id="short_description"
+                    label="Short description"
+                    value={shortDesc}
+                    multiline
+                    fullWidth
+                    rows={2}
+                    onChange={(e)=>{
+                        setSDesc(e.target.value);
+                        setNewSDesc(e.target.value+' ');
+                    }}
+                />
+                <br/>
+                <br/>
+                <TextField
+                    name="long_desc"
+                    id="long_description"
+                    label="Long description"
+                    value={longDesc}
+                    multiline
+                    fullWidth
+                    rows={3}
+                    onChange={(e)=>{
+                        setLDesc(e.target.value);
+                        setNewLDesc(e.target.value+' ')
+                    }}
+                />
+                <br/>
+                <br/>
+                <div style={{display:'flex', justifyContent:'space-around', alignItems:'center', margin:'auto', width:'600px' }}>
+                    <b style={{ marginRight: '100px'}}>Edit Image -</b> 
+                    {/* {file.name ? <p style={{width:'100px', height:'50px', overflow:'hidden', wordBreak: 'break-word'}}>{file.name}</p> : <p>No image</p>} */}
+                    <img src={`http://localhost:9000/${file.name}`} width='90' height='70'  alt={file.name}  />
+                    <Button variant="contained" sx={{ ml: 10}} component="label" size="small">
+                        Upload
+                        <input hidden type="file" name="serviceImage" onChange={(e)=>{setFile(e.target.files[0]);setNewFile(e.target.files[0])}}/>
+                    </Button>
+                </div>
+                <Button
+                    variant="contained"
+                    sx={{ mt: 5}}
+                    color="success"
+                    onClick={saveService}
+                >
+                    Save Changes
                 </Button>
-            </div>
-            <Button
-                variant="contained"
-                sx={{ mt: 5}}
-                color="success"
-                onClick={saveService}
-            >
-                Save Changes
-            </Button>
-            {flag? <EditDialogBox from="addService" status={status} setFlag={setFlag} handleCloseEdit={handleClose}/> : null}
-        </Box>
-      </Modal>
+            </Box>
+        </Modal>
     </div>
   );
 }

@@ -1,51 +1,59 @@
-import { setServiceAction, addServiceAction } from '../../redux/services/servicesAction';
+import { setServiceAction, addServiceAction, setLoading } from '../../redux/services/servicesAction';
 import axios from 'axios';
-
-
+import { toast } from 'react-toastify';
 
 function fetchServices(){
     return (dispatch)=>{
+        dispatch(setLoading(true));
         axios.get('http://localhost:9000/service')
         .then(res=>{
+            dispatch(setLoading(false));
             dispatch(setServiceAction(res.data.result))
         })
+        .catch(()=>dispatch(setLoading(false)))
     }
 }
 
 
-function addService(formData, setStatus, setFlag){
+function addService(formData,handleClose){
     return (dispatch)=>{
         axios.post('http://localhost:9000/addService',
         formData, 
         {headers:{'content-type':'multipart/form-data'}}
       )
       .then((res)=>{
-        setStatus(res.data.success);
-        setFlag(true);
         dispatch(addServiceAction({title:'', sDesc:'', lDesc:'', file:''}));
         dispatch(fetchServices());
+        handleClose();
+        toast.success("Added successfully!", {
+            position: toast.POSITION.TOP_RIGHT
+        });
       })
-      .catch(error=>{
-        setStatus(error.response.data.success)
-        setFlag(true)
+      .catch(()=>{
+        toast.error("Some error occurred!", {
+            position: toast.POSITION.TOP_RIGHT
+        });
       })
     }
 }
 
-function editService(id, formData, setStatus, setFlag){
+function editService(id, formData, handleClose){
     return (dispatch)=>{
         axios.patch(`http://localhost:9000/editService/${id}`,
             formData, 
             {headers:{'content-type':'multipart/form-data'}}
         )
         .then((res)=>{
-            setStatus(res.data.success);
-            setFlag(true);
             dispatch(fetchServices());
+            toast.success("Updated successfully!", {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+            handleClose()
         })
         .catch(error=>{
-            setStatus(error.response.data.success)
-            setFlag(true)
+            toast.error("Some error occurred!", {
+                position: toast.POSITION.TOP_RIGHT,
+            });
           })
     }
 }
@@ -53,7 +61,17 @@ function editService(id, formData, setStatus, setFlag){
 function deleteService(id, image){
     return (dispatch)=>{
         axios.delete(`http://localhost:9000/deleteService/${id}`,{data:{'image':image}})
-        .then(()=>dispatch(fetchServices()))
+        .then(()=>{
+            dispatch(fetchServices());
+            toast.success("Deleted successfully!", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        })
+        .catch(()=>{
+            toast.error("Some error occurred!", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        })
     }
 }
 

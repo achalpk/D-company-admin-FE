@@ -22,7 +22,7 @@ export default function EditDialogBox({ status, setFlag, handleCloseEdit }) {
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
           <DialogContentText>
-            {status ? <b>Service edited successfully</b> : <b>Error occured <br/> Please try again</b>}
+            {status ? <b>Service edited successfully</b> : <b>Error occured : <br/> Please try again</b>}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

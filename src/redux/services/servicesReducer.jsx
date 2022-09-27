@@ -1,7 +1,7 @@
-import { ServicesType, AddServicesType } from './servicesType';
+import { ServicesType, AddServicesType, LoadingType } from './servicesType';
 
 
-const initialState = { services:[], addData:{title:'', sDesc:'', lDesc:'', file:''} };
+const initialState = { services:[], addData:{title:'', sDesc:'', lDesc:'', file:''}, loading:false };
 
 function servicesReducer(state = initialState, action){
     switch(action.type){
@@ -9,6 +9,8 @@ function servicesReducer(state = initialState, action){
             return {...state, services : action.payload};
         case AddServicesType:
             return {...state, addData : action.payload};
+        case LoadingType:
+            return {...state, loading : action.payload};
         default :
             return state;
     }

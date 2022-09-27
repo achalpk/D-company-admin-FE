@@ -1,4 +1,4 @@
-import {ServicesType,AddServicesType} from './servicesType';
+import {ServicesType, AddServicesType, LoadingType} from './servicesType';
 
 
 export function setServiceAction(services){
@@ -15,11 +15,9 @@ export function addServiceAction(addData){
     };
 }
 
-
-
-// export function setError(error){
-//     return { 
-//         type : ErrorType,
-//         payload : error 
-//     };
-// }
+export function setLoading(loading){
+    return { 
+        type : LoadingType,
+        payload : loading 
+    };
+}
