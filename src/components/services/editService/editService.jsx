@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { editService } from '../../../APIs/services/services';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Modal from '@mui/material/Modal';
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 const style = {
   position: 'absolute',
@@ -22,6 +22,7 @@ const style = {
 };
 
 export default function EditService({editData, setEditData}) {
+    const loading = useSelector((state)=>state.servicesReducer.loading);
     const dispatch = useDispatch();
     const [title,setTitle] = useState(editData.title);
     const [shortDesc,setSDesc] = useState(editData.short_desc);
@@ -109,7 +110,6 @@ export default function EditService({editData, setEditData}) {
                 <br/>
                 <div style={{display:'flex', justifyContent:'space-around', alignItems:'center', margin:'auto', width:'600px' }}>
                     <b style={{ marginRight: '100px'}}>Edit Image -</b> 
-                    {/* {file.name ? <p style={{width:'100px', height:'50px', overflow:'hidden', wordBreak: 'break-word'}}>{file.name}</p> : <p>No image</p>} */}
                     <img src={`http://localhost:9000/${file.name}`} width='90' height='70'  alt={file.name}  />
                     <Button variant="contained" sx={{ ml: 10}} component="label" size="small">
                         Upload
@@ -122,7 +122,7 @@ export default function EditService({editData, setEditData}) {
                     color="success"
                     onClick={saveService}
                 >
-                    Save Changes
+                    Save Changes &nbsp; {loading.edit ?<CircularProgress size="18px" sx={{color:'black'}}/> : null}
                 </Button>
             </Box>
         </Modal>

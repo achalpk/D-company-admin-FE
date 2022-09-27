@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Modal from '@mui/material/Modal';
 import AddIcon from '@mui/icons-material/Add';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 const style = {
@@ -23,8 +24,9 @@ const style = {
   borderRadius: 2,
 };
 
-export default function AddService(props) {
+export default function AddService() {
   const data = useSelector((state)=>state.servicesReducer.addData);
+  const loading = useSelector((state)=>state.servicesReducer.loading);
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
@@ -93,12 +95,13 @@ export default function AddService(props) {
                 <input hidden type="file" name="serviceImage" onChange={(e)=>dispatch(addServiceAction({...data,file:e.target.files[0]}))}/>
             </Button>
             <br/>
+
             <Button
-                variant="contained"
-                sx={{ mt: 3}}
-                onClick={saveService}
+              variant="contained"
+              sx={{ mt: 3}}
+              onClick={saveService}
             >
-                Save
+              Save &nbsp; {loading.add ?<CircularProgress size="18px" sx={{color:'black'}}/> : null}
             </Button>
         </Box>
       </Modal>

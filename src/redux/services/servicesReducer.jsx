@@ -1,7 +1,11 @@
 import { ServicesType, AddServicesType, LoadingType } from './servicesType';
 
 
-const initialState = { services:[], addData:{title:'', sDesc:'', lDesc:'', file:''}, loading:false };
+const initialState = { 
+    services:[], 
+    addData:{title:'', sDesc:'', lDesc:'', file:''}, 
+    loading:{show:false, add:false, edit:false} 
+};
 
 function servicesReducer(state = initialState, action){
     switch(action.type){

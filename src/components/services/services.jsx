@@ -12,8 +12,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import EditIcon from '@mui/icons-material/Edit';
-// import CircularProgress from '@mui/material/CircularProgress';
-// import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 import AddService from './addService/addService';
 import EditService from './editService/editService';
 import { ToastContainer } from 'react-toastify';
@@ -31,7 +31,7 @@ const columns = [
 
 export default function Services() {
   const services = useSelector((state)=>state.servicesReducer.services);
-  // const loading = useSelector((state)=>state.servicesReducer.loading);
+  const loading = useSelector((state)=>state.servicesReducer.loading);
   const dispatch = useDispatch();
   const [editData,setEditData]=useState(false);
 
@@ -43,15 +43,6 @@ export default function Services() {
     dispatch(deleteService(id, image));
   }
 
-  // if(loading){
-  //   return(
-  //     <Box sx={{ display: 'flex', justifyContent:'center', alignItems:'center', height:'500px' }}>
-  //       <CircularProgress/>&nbsp;&nbsp;
-  //       <h3>Loading...</h3>
-  //     </Box>
-  //   )
-  // }
-
 
   return (
     <div className='services'>
@@ -61,6 +52,13 @@ export default function Services() {
       </div>
       <br/>
       <br/>
+      {loading.show?
+        <Box sx={{ display: 'flex', justifyContent:'center', alignItems:'center', height:'500px' }}>
+          <CircularProgress/>&nbsp;&nbsp;
+          <h3>Loading...</h3>
+        </Box>
+        :null
+      }
         <TableContainer sx={{ minHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -94,11 +92,10 @@ export default function Services() {
                                   <img className='service-img' src={`http://localhost:9000/${value}`} width='70' height='50'  alt={value} />
                                   : <p style={{width:'200px', overflow:'hidden'}}>{value || "Nil"}</p>
                                 }
-                                {/* {value ? <p style={{width:'200px', overflow:'hidden'}}>{value}</p> : <b style={{color:'red'}}>Nil</b>}&nbsp;&nbsp; */}
                               </TableCell>
                             );
                           })}
-                          <TableCell key='action'>
+                          <TableCell key={row.id}>
                             <Link 
                               to={{
                                 pathname: "/viewService",

@@ -1,43 +1,42 @@
-import { setServiceAction, addServiceAction, setLoading } from '../../redux/services/servicesAction';
+import { setWelcomeAction, addWelcomeAction, setWelcomeLoading } from '../../redux/welcome/welcomeAction';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-function fetchServices(){
+function fetchWelcome(){
     return (dispatch)=>{
-        dispatch(setLoading({show:true}));
-        axios.get('http://localhost:9000/service')
+        dispatch(setWelcomeLoading({show:true}));
+        axios.get('http://localhost:9000/welcomes')
         .then(res=>{
-            dispatch(setLoading({show:false}));
-            dispatch(setServiceAction(res.data.result))
+            dispatch(setWelcomeLoading({show:false}));
+            dispatch(setWelcomeAction(res.data.result))
         })
         .catch(()=>{
             toast.error("Some error occurred!", {
                 position: toast.POSITION.TOP_RIGHT
             });
-            dispatch(setLoading({show:false}))
+            dispatch(setWelcomeLoading({show:false}))
         })
     }
 }
 
 
-function addService(formData,handleClose){
+function addWelcome(data,handleClose){
     return (dispatch)=>{
-        dispatch(setLoading({add:true}));
-        axios.post('http://localhost:9000/addService',
-        formData, 
-        {headers:{'content-type':'multipart/form-data'}}
+        dispatch(setWelcomeLoading({add:true}));
+        axios.post('http://localhost:9000/addWelcome',
+            {title:data.title, desc:data.desc}
         )
         .then((res)=>{
-            dispatch(addServiceAction({title:'', sDesc:'', lDesc:'', file:''}));
-            dispatch(setLoading({add:false}))
-            dispatch(fetchServices());
+            dispatch(addWelcomeAction({title:'', desc:''}));
+            dispatch(setWelcomeLoading({add:false}))
+            dispatch(fetchWelcome());
             handleClose();
             toast.success("Added successfully!", {
                 position: toast.POSITION.TOP_RIGHT
             });
         })
         .catch(()=>{
-            dispatch(setLoading({add:false}))
+            dispatch(setWelcomeLoading({add:false}))
             toast.error("Some error occurred!", {
                 position: toast.POSITION.TOP_RIGHT
             });
@@ -45,23 +44,22 @@ function addService(formData,handleClose){
     }
 }
 
-function editService(id, formData, handleClose){
+function editWelcome(id, data, handleClose){
     return (dispatch)=>{
-        dispatch(setLoading({edit:true}));
-        axios.patch(`http://localhost:9000/editService/${id}`,
-            formData, 
-            {headers:{'content-type':'multipart/form-data'}}
+        dispatch(setWelcomeLoading({edit:true}));
+        axios.patch(`http://localhost:9000/editWelcome/${id}`,
+            {title:data.title, desc:data.desc}
         )
         .then((res)=>{
-            dispatch(setLoading({edit:false}))
-            dispatch(fetchServices());
+            dispatch(setWelcomeLoading({edit:false}))
+            dispatch(fetchWelcome());
             toast.success("Updated successfully!", {
                 position: toast.POSITION.TOP_RIGHT,
             });
             handleClose()
         })
         .catch(error=>{
-            dispatch(setLoading({edit:false}))
+            dispatch(setWelcomeLoading({edit:false}))
             toast.error("Some error occurred!", {
                 position: toast.POSITION.TOP_RIGHT,
             });
@@ -69,11 +67,11 @@ function editService(id, formData, handleClose){
     }
 }
 
-function deleteService(id, image){
+function deleteWelcome(id){
     return (dispatch)=>{
-        axios.delete(`http://localhost:9000/deleteService/${id}`,{data:{'image':image}})
+        axios.delete(`http://localhost:9000/deleteWelcome/${id}`)
         .then(()=>{
-            dispatch(fetchServices());
+            dispatch(fetchWelcome());
             toast.success("Deleted successfully!", {
                 position: toast.POSITION.TOP_RIGHT
             });
@@ -86,4 +84,4 @@ function deleteService(id, image){
     }
 }
 
-export {fetchServices, addService, editService, deleteService};
+export {fetchWelcome, addWelcome, editWelcome, deleteWelcome};
