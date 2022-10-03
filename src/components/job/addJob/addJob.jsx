@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addServiceAction } from '../../../redux/services/servicesAction';
-import { addService } from '../../../APIs/services/services';
+import { addJobAction } from '../../../redux/job/jobAction';
+import { addJob } from '../../../APIs/job/job';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -24,9 +24,9 @@ const style = {
   borderRadius: 2,
 };
 
-export default function AddService() {
-  const data = useSelector((state)=>state.servicesReducer.addData);
-  const loading = useSelector((state)=>state.servicesReducer.loading);
+export default function AddJob() {
+  const data = useSelector((state)=>state.jobReducer.addJobData);
+  const loading = useSelector((state)=>state.jobReducer.jobLoading);
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
@@ -34,21 +34,13 @@ export default function AddService() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const saveService = async ()=>{
-    const formData = new FormData();
-    formData.append('title',data.title);
-    formData.append('sDesc',data.sDesc);
-    formData.append('lDesc',data.lDesc);
-    formData.append('serviceImage',data.file);
-
-    dispatch(addService(formData,handleClose))
+  const saveJob = async ()=>{
+    dispatch(addJob(data,handleClose))
   }
-
-
 
   return (
     <div>
-      <Button variant="contained" endIcon={<AddIcon />} onClick={handleOpen}>Add Service</Button>
+      <Button variant="contained" endIcon={<AddIcon />} onClick={handleOpen}>Add Job</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -56,7 +48,7 @@ export default function AddService() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-        <h1>Add Service</h1>
+        <h1>Add Job</h1>
             <TextField
                 name="title"
                 required
@@ -64,43 +56,44 @@ export default function AddService() {
                 id="title"
                 label="Title"
                 autoFocus
-                onChange={(e)=>dispatch(addServiceAction({...data,title:e.target.value}))}
+                onChange={(e)=>dispatch(addJobAction({...data,title:e.target.value}))}
             />
             <br/>
             <br/>
             <TextField
-                name="short_desc"
-                id="short_description"
-                label="Short description"
-                multiline
-                fullWidth
-                rows={2}
-                onChange={(e)=>dispatch(addServiceAction({...data,sDesc:e.target.value}))}
-            />
-            <br/>
-            <br/>
-            <TextField
-                name="long_desc"
-                id="long_description"
-                label="Long description"
+                name="desc"
+                id="description"
+                label="Description"
                 multiline
                 fullWidth
                 rows={5}
-                onChange={(e)=>dispatch(addServiceAction({...data,lDesc:e.target.value}))}
+                onChange={(e)=>dispatch(addJobAction({...data,desc:e.target.value}))}
             />
             <br/>
             <br/>
-            <b>Upload image :</b> 
-            <Button variant="contained" color="success" component="label">
-                Upload
-                <input hidden type="file" name="serviceImage" onChange={(e)=>dispatch(addServiceAction({...data,file:e.target.files[0]}))}/>
-            </Button>
+            <TextField
+                name="exp"
+                id="experience"
+                label="Experience"
+                multiline
+                fullWidth
+                onChange={(e)=>dispatch(addJobAction({...data,exp:e.target.value}))}
+            />
             <br/>
-
+            <br/>
+            <TextField
+                name="location"
+                id="location"
+                label="Location"
+                multiline
+                fullWidth
+                onChange={(e)=>dispatch(addJobAction({...data,location:e.target.value}))}
+            />
+            <br/>
             <Button
               variant="contained"
               sx={{ mt: 3}}
-              onClick={saveService}
+              onClick={saveJob}
             >
               Save &nbsp; {loading.add ?<CircularProgress size="18px" sx={{color:'black'}}/> : null}
             </Button>

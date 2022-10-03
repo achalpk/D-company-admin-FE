@@ -5,8 +5,13 @@ import './App.css';
 import SideBar from "./components/header/sidebar";
 import Home from './components/home/home';
 import Services from "./components/services/services";
-import ViewService from "./components/services/viewService/viewService"
+import ViewService from "./components/services/viewService/viewService";
 import Welcome from "./components/welcome/welcome";
+import ViewWelcome from "./components/welcome/viewWelcome/viewWelcome";
+import Job from './components/job/job';
+import JobApplicant from './components/jobApplicant/jobApplicant';
+import ViewJobApplicant from './components/jobApplicant/viewJobApplicant/viewJobApplicant';
+
 
 function App() {
   return (
@@ -19,6 +24,10 @@ function App() {
                 <Route path='/services'><Services/></Route>
                 <Route path='/viewService'><ViewService/></Route>
                 <Route path='/welcome'><Welcome/></Route>
+                <Route path='/viewWelcome'><ViewWelcome/></Route>
+                <Route path='/job'><Job/></Route>
+                <Route path='/job Applicant'><JobApplicant/></Route>
+                <Route path='/ViewJobApplicant'><ViewJobApplicant/></Route>
                 <Route path='*'><h1 style={{textAlign:"center", flex:'1'}}>404 error <br/> Page not found</h1></Route>
             </Switch>
         </BrowserRouter>

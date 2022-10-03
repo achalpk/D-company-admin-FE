@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import './welcome.css'
+import React, { useEffect } from 'react';
+import './jobApplicant.css'
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import {fetchWelcome, deleteWelcome} from '../../APIs/welcome/welcome';
-import AddWelcome from './addWelcome/addWelcome';
-import EditWelcome from './editWelcome/editWelcome';
+import {fetchJobApplicant, deleteJobApplicant} from '../../APIs/jobApplicant/jobApplicant';
 import Table from '@mui/material/Table';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -13,7 +11,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import EditIcon from '@mui/icons-material/Edit';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { ToastContainer } from 'react-toastify';
@@ -23,34 +20,30 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const columns = [
-  { id: 'title', label: 'Title', width: '100px', fontWeight:'bold', fontSize:16, backgroundColor:'grey'},
-  { id: 'desc', label: 'Description', width:'200px', fontWeight:'bold',fontSize:16, backgroundColor:'grey' },
+  { id: 'name', label: 'Applicant name', width: '100px', fontWeight:'bold', fontSize:16, backgroundColor:'grey'},
+  { id: 'title', label: 'Job title', width: '100px', fontWeight:'bold', fontSize:16, backgroundColor:'grey'},
 ];
 
-export default function Welcome() {
-  const welcome = useSelector((state)=>state.welcomeReducer.welcome);
-  const welcomeLoading = useSelector((state)=>state.welcomeReducer.welcomeLoading);
+export default function JobApplicant() {
+  const jobApplicant = useSelector((state)=>state.jobApplicantReducer.jobApplicant);
+  const loading = useSelector((state)=>state.jobApplicantReducer.jobApplicantLoading);
   const dispatch = useDispatch();
-  const [editData,setEditData]=useState(false);
 
   useEffect(()=>{
-    dispatch(fetchWelcome());
+    dispatch(fetchJobApplicant());
   },[dispatch])
 
   const onClickDelete = (id)=>{
-    dispatch(deleteWelcome(id));
+    dispatch(deleteJobApplicant(id));
   }
 
 
   return (
-    <div className='welcome'>
+    <div className='jobApplicant'>
       <ToastContainer autoClose={3000}/>
-      <div style={{textAlign:'center'}}>
-        <AddWelcome/>
-      </div>
       <br/>
       <br/>
-      {welcomeLoading.show?
+      {loading.show?
         <Box sx={{ display: 'flex', justifyContent:'center', alignItems:'center', height:'500px' }}>
           <CircularProgress/>&nbsp;&nbsp;
           <h3>Loading...</h3>
@@ -79,7 +72,7 @@ export default function Welcome() {
               </TableRow>
             </TableHead>
                 <TableBody>
-                  {welcome.map((row, index) => {
+                  {jobApplicant.map((row, index) => {
                       return (
                         <TableRow hover  key={index}>
                           {columns.map((column) => {
@@ -93,16 +86,13 @@ export default function Welcome() {
                           <TableCell key={row.id}>
                             <Link 
                               to={{
-                                pathname: "/viewWelcome",
+                                pathname: "/viewJobApplicant",
                                 state: {viewData: row}
                                 }} 
                               className='Links'
                             >
                               <VisibilityIcon/>
                             </Link>
-                            &nbsp;
-                            &nbsp;
-                            <EditIcon onClick={()=>setEditData(row)}  style={{cursor:'pointer'}} color="primary"/>
                             &nbsp;
                             &nbsp;
                             <DeleteIcon style={{cursor:'pointer'}} color="error" onClick={()=>onClickDelete(row.id)}/>
@@ -113,7 +103,6 @@ export default function Welcome() {
                 </TableBody>
           </Table>
         </TableContainer>
-        {editData && <EditWelcome editData = {editData} setEditData = {setEditData}/> }
       
     </div>
   );
