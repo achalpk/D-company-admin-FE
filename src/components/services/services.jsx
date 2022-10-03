@@ -57,8 +57,7 @@ export default function Services() {
           <CircularProgress/>&nbsp;&nbsp;
           <h3>Loading...</h3>
         </Box>
-        :null
-      }
+      :
         <TableContainer sx={{ minHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -118,6 +117,7 @@ export default function Services() {
                 </TableBody>
           </Table>
         </TableContainer>
+      }
       {editData && <EditService editData = {editData} setEditData = {setEditData}/> }
       
     </div>

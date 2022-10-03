@@ -1,6 +1,5 @@
 import { setWelcomeAction, addWelcomeAction, setWelcomeLoading } from '../../redux/welcome/welcomeAction';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 
 function fetchWelcome(){
     return (dispatch)=>{
@@ -10,10 +9,7 @@ function fetchWelcome(){
             dispatch(setWelcomeLoading({show:false}));
             dispatch(setWelcomeAction(res.data.result))
         })
-        .catch(()=>{
-            toast.error("Some error occurred!", {
-                position: toast.POSITION.TOP_RIGHT
-            });
+        .catch((error)=>{
             dispatch(setWelcomeLoading({show:false}))
         })
     }
@@ -31,15 +27,9 @@ function addWelcome(data,handleClose){
             dispatch(setWelcomeLoading({add:false}))
             dispatch(fetchWelcome());
             handleClose();
-            toast.success("Added successfully!", {
-                position: toast.POSITION.TOP_RIGHT
-            });
         })
-        .catch(()=>{
+        .catch((error)=>{
             dispatch(setWelcomeLoading({add:false}))
-            toast.error("Some error occurred!", {
-                position: toast.POSITION.TOP_RIGHT
-            });
         })
     }
 }
@@ -53,16 +43,10 @@ function editWelcome(id, data, handleClose){
         .then((res)=>{
             dispatch(setWelcomeLoading({edit:false}))
             dispatch(fetchWelcome());
-            toast.success("Updated successfully!", {
-                position: toast.POSITION.TOP_RIGHT,
-            });
             handleClose()
         })
         .catch(error=>{
             dispatch(setWelcomeLoading({edit:false}))
-            toast.error("Some error occurred!", {
-                position: toast.POSITION.TOP_RIGHT,
-            });
           })
     }
 }
@@ -70,16 +54,8 @@ function editWelcome(id, data, handleClose){
 function deleteWelcome(id){
     return (dispatch)=>{
         axios.delete(`http://localhost:9000/deleteWelcome/${id}`)
-        .then(()=>{
+        .then((res)=>{
             dispatch(fetchWelcome());
-            toast.success("Deleted successfully!", {
-                position: toast.POSITION.TOP_RIGHT
-            });
-        })
-        .catch(()=>{
-            toast.error("Some error occurred!", {
-                position: toast.POSITION.TOP_RIGHT
-            });
         })
     }
 }

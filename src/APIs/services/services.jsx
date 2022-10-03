@@ -1,6 +1,5 @@
 import { setServiceAction, addServiceAction, setLoading } from '../../redux/services/servicesAction';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 
 function fetchServices(){
     return (dispatch)=>{
@@ -10,10 +9,7 @@ function fetchServices(){
             dispatch(setLoading({show:false}));
             dispatch(setServiceAction(res.data.result))
         })
-        .catch(()=>{
-            toast.error("Some error occurred!", {
-                position: toast.POSITION.TOP_RIGHT
-            });
+        .catch((error)=>{
             dispatch(setLoading({show:false}))
         })
     }
@@ -32,15 +28,9 @@ function addService(formData,handleClose){
             dispatch(setLoading({add:false}))
             dispatch(fetchServices());
             handleClose();
-            toast.success("Added successfully!", {
-                position: toast.POSITION.TOP_RIGHT
-            });
         })
-        .catch(()=>{
+        .catch((error)=>{
             dispatch(setLoading({add:false}))
-            toast.error("Some error occurred!", {
-                position: toast.POSITION.TOP_RIGHT
-            });
         })
     }
 }
@@ -55,16 +45,10 @@ function editService(id, formData, handleClose){
         .then((res)=>{
             dispatch(setLoading({edit:false}))
             dispatch(fetchServices());
-            toast.success("Updated successfully!", {
-                position: toast.POSITION.TOP_RIGHT,
-            });
             handleClose()
         })
         .catch(error=>{
             dispatch(setLoading({edit:false}))
-            toast.error("Some error occurred!", {
-                position: toast.POSITION.TOP_RIGHT,
-            });
           })
     }
 }
@@ -72,16 +56,8 @@ function editService(id, formData, handleClose){
 function deleteService(id, image){
     return (dispatch)=>{
         axios.delete(`http://localhost:9000/deleteService/${id}`,{data:{'image':image}})
-        .then(()=>{
+        .then((res)=>{
             dispatch(fetchServices());
-            toast.success("Deleted successfully!", {
-                position: toast.POSITION.TOP_RIGHT
-            });
-        })
-        .catch(()=>{
-            toast.error("Some error occurred!", {
-                position: toast.POSITION.TOP_RIGHT
-            });
         })
     }
 }

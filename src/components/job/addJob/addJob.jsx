@@ -38,8 +38,6 @@ export default function AddJob() {
     dispatch(addJob(data,handleClose))
   }
 
-
-
   return (
     <div>
       <Button variant="contained" endIcon={<AddIcon />} onClick={handleOpen}>Add Job</Button>

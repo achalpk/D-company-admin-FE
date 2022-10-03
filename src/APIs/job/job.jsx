@@ -1,6 +1,5 @@
 import { setJobAction, addJobAction, setJobLoading } from '../../redux/job/jobAction';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 
 function fetchJob(){
     return (dispatch)=>{
@@ -10,10 +9,7 @@ function fetchJob(){
             dispatch(setJobLoading({show:false}));
             dispatch(setJobAction(res.data.result))
         })
-        .catch(()=>{
-            toast.error("Some error occurred!", {
-                position: toast.POSITION.TOP_RIGHT
-            });
+        .catch((error)=>{
             dispatch(setJobLoading({show:false}))
         })
     }
@@ -30,15 +26,10 @@ function addJob(data,handleClose){
             dispatch(setJobLoading({add:false}))
             dispatch(fetchJob());
             handleClose();
-            toast.success("Added successfully!", {
-                position: toast.POSITION.TOP_RIGHT
-            });
         })
-        .catch(()=>{
+        .catch((error)=>{
             dispatch(setJobLoading({add:false}))
-            toast.error("Some error occurred!", {
-                position: toast.POSITION.TOP_RIGHT
-            });
+
         })
     }
 }
@@ -46,16 +37,8 @@ function addJob(data,handleClose){
 function deleteJob(id){
     return (dispatch)=>{
         axios.delete(`http://localhost:9000/deleteJob/${id}`)
-        .then(()=>{
+        .then((res)=>{
             dispatch(fetchJob());
-            toast.success("Deleted successfully!", {
-                position: toast.POSITION.TOP_RIGHT
-            });
-        })
-        .catch(()=>{
-            toast.error("Some error occurred!", {
-                position: toast.POSITION.TOP_RIGHT
-            });
         })
     }
 }
