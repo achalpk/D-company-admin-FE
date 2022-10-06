@@ -47,8 +47,8 @@ export default function JobApplicant() {
     setData(searchedData)
   }
 
-  const onClickDelete = (id)=>{
-    dispatch(deleteJobApplicant(id));
+  const onClickDelete = (id, resume)=>{
+    dispatch(deleteJobApplicant(id, resume));
   }
 
 
@@ -122,7 +122,7 @@ export default function JobApplicant() {
                             </Link>
                             &nbsp;
                             &nbsp;
-                            <DeleteIcon style={{cursor:'pointer'}} color="error" onClick={()=>onClickDelete(row.id)}/>
+                            <DeleteIcon style={{cursor:'pointer'}} color="error" onClick={()=>onClickDelete(row.id,row.resume)}/>
                           </TableCell>
                         </TableRow>
                       );

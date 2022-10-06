@@ -10,8 +10,9 @@ function PrivateRoute({children, ...rest }){
 
     return(
         <Route {...rest} render= {()=>{            
-            return isAuth === 'true' && auth === true ? 
+            return isAuth === 'true' ? 
             <div className="App">
+                {console.log(auth)}
                 <SideBar/>
                 {children}
             </div> :
