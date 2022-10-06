@@ -12,10 +12,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-
 
 
 const columns = [
@@ -41,7 +37,6 @@ export default function Job() {
 
   return (
     <div className='job'>
-      <ToastContainer autoClose={3000}/>
       <div style={{textAlign:'center'}}>
         <AddJob/>
       </div>

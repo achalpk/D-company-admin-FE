@@ -1,16 +1,24 @@
 import { setServiceAction, addServiceAction, setLoading } from '../../redux/services/servicesAction';
+import { authAction } from '../../redux/auth/authAction';
 import axios from 'axios';
 
 function fetchServices(){
     return (dispatch)=>{
         dispatch(setLoading({show:true}));
-        axios.get('http://localhost:9000/service')
+        axios.get('http://localhost:9000/services')
         .then(res=>{
             dispatch(setLoading({show:false}));
             dispatch(setServiceAction(res.data.result))
         })
         .catch((error)=>{
-            dispatch(setLoading({show:false}))
+            if(error.response.data.noToken){
+                localStorage.removeItem('Token');
+                localStorage.removeItem('isAuth');
+                dispatch(authAction(false));
+            }
+            else{
+                dispatch(setLoading({show:false}))
+            }
         })
     }
 }
@@ -30,7 +38,14 @@ function addService(formData,handleClose){
             handleClose();
         })
         .catch((error)=>{
-            dispatch(setLoading({add:false}))
+            if(error.response.data.noToken){
+                localStorage.removeItem('Token');
+                localStorage.removeItem('isAuth');
+                dispatch(authAction(false));
+            }
+            else{
+                dispatch(setLoading({add:false}));
+            }
         })
     }
 }
@@ -48,8 +63,15 @@ function editService(id, formData, handleClose){
             handleClose()
         })
         .catch(error=>{
-            dispatch(setLoading({edit:false}))
-          })
+            if(error.response.data.noToken){
+                localStorage.removeItem('Token');
+                localStorage.removeItem('isAuth');
+                dispatch(authAction(false));
+            }
+            else{
+                dispatch(setLoading({edit:false}));
+            }
+        })
     }
 }
 
@@ -58,6 +80,13 @@ function deleteService(id, image){
         axios.delete(`http://localhost:9000/deleteService/${id}`,{data:{'image':image}})
         .then((res)=>{
             dispatch(fetchServices());
+        })
+        .catch((error)=>{
+            if(error.response.data.noToken){
+                localStorage.removeItem('Token');
+                localStorage.removeItem('isAuth');
+                dispatch(authAction(false));
+            }
         })
     }
 }

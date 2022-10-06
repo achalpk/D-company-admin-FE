@@ -7,6 +7,7 @@ import App from './App';
 
 axios.interceptors.request.use(
     (req) => {
+        req.headers.token = localStorage.getItem('Token');
         return req;
     },
     (err) => {

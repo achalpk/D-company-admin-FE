@@ -16,10 +16,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import AddService from './addService/addService';
 import EditService from './editService/editService';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-
 
 
 const columns = [
@@ -46,7 +42,6 @@ export default function Services() {
 
   return (
     <div className='services'>
-      <ToastContainer autoClose={3000}/>
       <div style={{textAlign:'center'}}>
         <AddService/>
       </div>

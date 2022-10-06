@@ -90,7 +90,7 @@ export default function AddService() {
             />
             <br/>
             <br/>
-            <b>Upload image :</b> 
+            <b>Upload image :</b>           
             <Button variant="contained" color="success" component="label">
                 Upload
                 <input hidden type="file" name="serviceImage" onChange={(e)=>dispatch(addServiceAction({...data,file:e.target.files[0]}))}/>

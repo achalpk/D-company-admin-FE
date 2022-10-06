@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './jobApplicant.css'
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -13,25 +13,39 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-
+import TextField from '@mui/material/TextField';
+import SearchIcon from '@mui/icons-material/Search';
+import IconButton from '@mui/material/IconButton';
+import AppsIcon from '@mui/icons-material/Apps';
 
 
 const columns = [
   { id: 'name', label: 'Applicant name', width: '100px', fontWeight:'bold', fontSize:16, backgroundColor:'grey'},
   { id: 'title', label: 'Job title', width: '100px', fontWeight:'bold', fontSize:16, backgroundColor:'grey'},
+  { id: 'phone', label: 'Phone', width: '100px', fontWeight:'bold', fontSize:16, backgroundColor:'grey'},
 ];
 
 export default function JobApplicant() {
   const jobApplicant = useSelector((state)=>state.jobApplicantReducer.jobApplicant);
   const loading = useSelector((state)=>state.jobApplicantReducer.jobApplicantLoading);
   const dispatch = useDispatch();
+  const [data,setData] = useState([]);
+  const [search,setSearch] = useState('');
 
   useEffect(()=>{
     dispatch(fetchJobApplicant());
   },[dispatch])
+
+  useEffect(()=>{
+    setData(jobApplicant);
+  },[jobApplicant])
+
+  const searchRequest = (keyword)=>{
+    const searchedData = jobApplicant.filter((row) => {
+      return row.phone.toLowerCase().includes(keyword.toLowerCase());
+    });
+    setData(searchedData)
+  }
 
   const onClickDelete = (id)=>{
     dispatch(deleteJobApplicant(id));
@@ -40,7 +54,20 @@ export default function JobApplicant() {
 
   return (
     <div className='jobApplicant'>
-      <ToastContainer autoClose={3000}/>
+      <div style={{display:'flex', float:'right'}}>
+        <IconButton aria-label="search" onClick={()=>searchRequest('')}>
+          <AppsIcon/>
+        </IconButton>
+        <TextField
+          id="search"
+          placeholder="Search..."
+          size="small"
+          onChange={(e)=>setSearch(e.target.value)}
+        />
+        <IconButton aria-label="search" onClick={()=>searchRequest(search)}>
+          <SearchIcon/>
+        </IconButton>
+      </div>
       <br/>
       <br/>
       {loading.show?
@@ -72,7 +99,7 @@ export default function JobApplicant() {
               </TableRow>
             </TableHead>
                 <TableBody>
-                  {jobApplicant.map((row, index) => {
+                  <>{data.map((row, index) => {
                       return (
                         <TableRow hover  key={index}>
                           {columns.map((column) => {
@@ -99,7 +126,7 @@ export default function JobApplicant() {
                           </TableCell>
                         </TableRow>
                       );
-                    })}
+                    })}</>
                 </TableBody>
           </Table>
         </TableContainer>
