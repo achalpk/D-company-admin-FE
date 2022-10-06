@@ -23,9 +23,9 @@ function fetchJobApplicant(){
     }
 }
 
-function deleteJobApplicant(id){
+function deleteJobApplicant(id, resume){
     return (dispatch)=>{
-        axios.delete(`http://localhost:9000/deleteJobApplicant/${id}`)
+        axios.delete(`http://localhost:9000/deleteJobApplicant/${id}`,{data:{'resume':resume}})
         .then((res)=>{
             dispatch(fetchJobApplicant());
         })
