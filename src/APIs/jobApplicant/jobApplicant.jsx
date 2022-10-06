@@ -1,4 +1,5 @@
 import { setJobApplicantAction, setJobApplicantLoading } from '../../redux/jobApplicant/jobApplicantAction';
+import { authAction } from '../../redux/auth/authAction';
 import axios from 'axios';
 
 function fetchJobApplicant(){
@@ -10,7 +11,14 @@ function fetchJobApplicant(){
             dispatch(setJobApplicantAction(res.data.result))
         })
         .catch((error)=>{
-            dispatch(setJobApplicantLoading({show:false}))
+            if(error.response.data.noToken){
+                localStorage.removeItem('Token');
+                localStorage.removeItem('isAuth');
+                dispatch(authAction(false));
+            }
+            else{
+                dispatch(setJobApplicantLoading({show:false}));
+            }
         })
     }
 }
@@ -20,6 +28,13 @@ function deleteJobApplicant(id){
         axios.delete(`http://localhost:9000/deleteJobApplicant/${id}`)
         .then((res)=>{
             dispatch(fetchJobApplicant());
+        })
+        .catch((error)=>{
+            if(error.response.data.noToken){
+                localStorage.removeItem('Token');
+                localStorage.removeItem('isAuth');
+                dispatch(authAction(false));
+            }
         })
     }
 }

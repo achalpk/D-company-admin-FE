@@ -16,10 +16,6 @@ import TableRow from '@mui/material/TableRow';
 import EditIcon from '@mui/icons-material/Edit';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-
 
 
 const columns = [
@@ -44,7 +40,6 @@ export default function Welcome() {
 
   return (
     <div className='welcome'>
-      <ToastContainer autoClose={3000}/>
       <div style={{textAlign:'center'}}>
         <AddWelcome/>
       </div>

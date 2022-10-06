@@ -1,16 +1,24 @@
 import { setWelcomeAction, addWelcomeAction, setWelcomeLoading } from '../../redux/welcome/welcomeAction';
+import { authAction } from '../../redux/auth/authAction';
 import axios from 'axios';
 
 function fetchWelcome(){
     return (dispatch)=>{
         dispatch(setWelcomeLoading({show:true}));
-        axios.get('http://localhost:9000/welcomes')
+        axios.get('http://localhost:9000/welcome')
         .then(res=>{
             dispatch(setWelcomeLoading({show:false}));
             dispatch(setWelcomeAction(res.data.result))
         })
         .catch((error)=>{
-            dispatch(setWelcomeLoading({show:false}))
+            if(error.response.data.noToken){
+                localStorage.removeItem('Token');
+                localStorage.removeItem('isAuth');
+                dispatch(authAction(false));
+            }
+            else{
+                dispatch(setWelcomeLoading({show:false}))
+            }
         })
     }
 }
@@ -29,7 +37,14 @@ function addWelcome(data,handleClose){
             handleClose();
         })
         .catch((error)=>{
-            dispatch(setWelcomeLoading({add:false}))
+            if(error.response.data.noToken){
+                localStorage.removeItem('Token');
+                localStorage.removeItem('isAuth');
+                dispatch(authAction(false));
+            }
+            else{
+                dispatch(setWelcomeLoading({add:false}))
+            }
         })
     }
 }
@@ -46,7 +61,14 @@ function editWelcome(id, data, handleClose){
             handleClose()
         })
         .catch(error=>{
-            dispatch(setWelcomeLoading({edit:false}))
+            if(error.response.data.noToken){
+                localStorage.removeItem('Token');
+                localStorage.removeItem('isAuth');
+                dispatch(authAction(false));
+            }
+            else{            
+                dispatch(setWelcomeLoading({edit:false}))
+            }
           })
     }
 }
@@ -56,6 +78,13 @@ function deleteWelcome(id){
         axios.delete(`http://localhost:9000/deleteWelcome/${id}`)
         .then((res)=>{
             dispatch(fetchWelcome());
+        })
+        .catch((error)=>{
+            if(error.response.data.noToken){
+                localStorage.removeItem('Token');
+                localStorage.removeItem('isAuth');
+                dispatch(authAction(false));
+            }
         })
     }
 }

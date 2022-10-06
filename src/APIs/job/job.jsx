@@ -1,16 +1,24 @@
 import { setJobAction, addJobAction, setJobLoading } from '../../redux/job/jobAction';
+import { authAction } from '../../redux/auth/authAction';
 import axios from 'axios';
 
 function fetchJob(){
     return (dispatch)=>{
         dispatch(setJobLoading({show:true}));
-        axios.get('http://localhost:9000/jobs')
+        axios.get('http://localhost:9000/job')
         .then(res=>{
             dispatch(setJobLoading({show:false}));
             dispatch(setJobAction(res.data.result))
         })
         .catch((error)=>{
-            dispatch(setJobLoading({show:false}))
+            if(error.response.data.noToken){
+                localStorage.removeItem('Token');
+                localStorage.removeItem('isAuth');
+                dispatch(authAction(false));
+            }
+            else{
+                dispatch(setJobLoading({show:false}));
+            }
         })
     }
 }
@@ -28,8 +36,14 @@ function addJob(data,handleClose){
             handleClose();
         })
         .catch((error)=>{
-            dispatch(setJobLoading({add:false}))
-
+            if(error.response.data.noToken){
+                localStorage.removeItem('Token');
+                localStorage.removeItem('isAuth');
+                dispatch(authAction(false));
+            }
+            else{
+                dispatch(setJobLoading({add:false}))
+            }
         })
     }
 }
@@ -39,6 +53,13 @@ function deleteJob(id){
         axios.delete(`http://localhost:9000/deleteJob/${id}`)
         .then((res)=>{
             dispatch(fetchJob());
+        })
+        .catch((error)=>{
+            if(error.response.data.noToken){
+                localStorage.removeItem('Token');
+                localStorage.removeItem('isAuth');
+                dispatch(authAction(false));
+            }
         })
     }
 }

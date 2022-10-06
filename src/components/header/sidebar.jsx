@@ -1,9 +1,13 @@
 import * as React from 'react';
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {authAction} from '../../redux/auth/authAction';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
@@ -19,7 +23,7 @@ import SourceIcon from '@mui/icons-material/Source';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import WorkIcon from '@mui/icons-material/Work';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
-import { Link } from 'react-router-dom';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const drawerWidth = 240;
 
@@ -86,9 +90,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function MiniDrawer() {
+export default function SideBar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -97,6 +103,12 @@ export default function MiniDrawer() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const logout = ()=>{
+    localStorage.removeItem('isAuth');
+    localStorage.removeItem('Token');
+    dispatch(authAction(false));
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -113,13 +125,16 @@ export default function MiniDrawer() {
               ...(open && { display: 'none' }),
             }}
           >
-            <MenuIcon />
+          <MenuIcon />
           </IconButton>
           <Link to='/' className='Links'>
             <Typography variant="h6" noWrap component="div">
               D-Admin Panel
             </Typography>
           </Link>
+          <Button endIcon={<LogoutIcon/>} variant="text" style={{marginLeft:'75vw', color:'white'}} size="small" onClick={logout}>
+            Logout
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
